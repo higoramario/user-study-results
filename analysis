@@ -1,0 +1,1464 @@
+Jaguar x Eclipse study - analysis report
+
+We started checking if the confounding variables had significant impacts on the results. These variables are the faults, the tasks order, and the proportion in which the faults were allocated between Jaguar line (JL) and Jaguar method (JM). 
+We used the Latin Square design to avoid these factors. Therefore, we checked if Latin Square was effective to keep the experiment's results free from such factors.
+
+###Control factors assessment
+
+1. The distribution of the faults (jsoup and xstream) between Jaguar and Eclipse were the same?
+
+We built a contingency table (crosstab) for the frequency distribution of the faults for the Jaguar and Eclipse tasks.
+We applied the fbst test to assess if there were effects of the distribution of the faults in the participants' allocation.
+
+crosstab
+----------------
+jsoup xstream 
+     15      11
+----------------
+
+p-value = 0.358804
+
+The p-value shows that the fault distribution was proportional between Jaguar and Eclipse.
+
+
+2. The order of the tasks (Jaguar and Eclipse) had any tendency?
+
+We also used a contingency table and fbst to evaluate this question.
+
+crosstab - jaguar 1st?
+---------
+no yes 
+ 11  15
+---------
+
+p-value = 0.4418605
+
+The p-value shows that the tasks order was proportional among the participants.
+
+
+3. The distribution of the faults (jsoup and xstream) between JL and JM were the same?
+
+We also used a contingency table and fbst for this question.
+
+crosstab
+----------------
+  jsoup xstream
+L     6       6
+M     9       5
+----------------
+
+p-value = 0.4950166
+
+The fault distribution between the two Jaguar versions was proportional.
+
+
+###Main questions
+
+#1. There were differences in the participants' debugging effectiveness using Jaguar and Eclipse? 
+
+We built a contingency table (crosstab) for the participants who found/not found the faults for both Jaguar and Eclipse tasks.
+We applied the fbst test to assess if there were significant differences for the debugging effectiveness using both techniques.
+
+crosstab
+-------------------------
+               Eclipse
+J          Found NotFound
+a Found        4        8
+g NotFound     1       13
+-------------------------
+
+p-value = 0.0166113
+
+The p-value indicates that there is a significant difference in locating and fixing the bugs using Jaguar or Eclipse with statistical significance.
+
+Parameters used in fbst.ct function
+ttype:diagsym
+simulate.p.value=TRUE -> value used to generate a number (B=300 runs) of simulations (by generating random data) to empirically estimate if the distribution is normal in terms of a standard deviation.
+Applied to fbst, we want to see if our results are usual (close to a normal distribution)
+*Monte Carlo method is used to generate the simulation.
+
+*for B=2000, p-value=0.02248876
+
+
+The effect size for binary data is measured by risk ratio (RR)
+We calculate the relative risk for finding bugs using Jaguar compared to Eclipse 
+
+expected probability of success from control group
+5 / 26 = 0.1923077
+
+#expected probability of success from treatment group
+12 / 26 = 0.4615385
+
+risk ratio for success using jaguar
+RR = 2.4
+
+According to McCough and Faraone (2009), RR indicates a fair effect size: RR=1 means no differences, while RR=3 indicates three times more probability for the treatment showing some improvement.
+
+
+Other effect size measure for binary data is the odds ratio.
+eclipse
+5 / 21 = 0.2380952
+
+jaguar
+12 / 14 = 0.8571429
+
+oddratio = 0.8571429 / 0.2380952 = 3.6
+
+* according to Chen et al. (2010), odds ratio interpretation is:
+> 1.68 = small
+> 3.47 = medium
+> 6.71 = large
+
+these values are compared to the Cohen's r scale
+
+
+
+#2. There were differences in the participants' debugging efficiency using Jaguar and Eclipse? 
+
+We applied the (unpaired) wilcoxon rank sum test for the participants who found the bugs.
+
+W = 33, p-value = 0.799
+
+There were no significant differences in the efficiency using Jaguar or Eclipse. 
+A few number of participants found bugs, especially for Eclipse. Thus, the sample size is more limited to draw conclusions using statistical tests.
+
+Median (Jaguar) = 16.55
+Median (Eclipse) = 23
+
+
+Effect size using Cliff's delta Dominance Matrix (DM) effect size (Cliff, 1993)
+Cliff's delta varies between -1 and 1.
+
+Cliff's effect size = 0.1 (Cohen's d = 0.13202)
+This means that Jaguar has a small effect size over Eclipse regarding efficiency
+
+*Cohen's d scale: small > 0.2, medium > 0.5, large > 0.8
+
+Probability of Superiority (PS) = 0.55
+PS means that 55% of the participants who found a bug using Jaguar spent less time than those who found using only Eclipse
+
+
+
+#3. There were differences in the participants' debugging effectiveness using JL and JM? 
+
+We built a contingency table (crosstab) for the participants who found/not found the faults using Jaguar with lines and methods.
+We applied the fbst test to assess if there were significant differences for the debugging effectiveness using both techniques.
+
+crosstab
+-------------------
+  Found NotFound
+L     5        7
+M     7        7
+-------------------
+
+p-value = 0.6777409
+
+The p-value indicates that there is no significant difference in locating and fixing the bugs using JL or JM.
+
+
+The effect size showed no differences between Jaguar Line and Jaguar Method. For RR, there are no effects. For OR, the values are less than small.
+RR = 1 (Line x Method)
+RR = 1 (Method x Line)
+
+OR = 0.7142857 (Line x Method)
+OR = 1.4 (Method x Line)
+
+
+
+#3.1 Effectiveness JL x Eclipse
+
+crosstab
+---------------------------
+              Eclipse
+J          Found NotFound
+a Found        2        3
+g NotFound     0        7
+---------------------------
+
+p-value = 0.04651163
+
+Effect size, we are considering all 26 participants for Eclipse
+RR = 2.166667
+OR = 3
+
+
+#3.2 Effectiveness JM x Eclipse
+
+crosstab
+---------------------------
+              Eclipse
+J          Found NotFound
+a Found        2        5
+g NotFound     1        6
+---------------------------
+
+p-value = 0.1129568
+
+Effect size, we are considering all 26 participants for Eclipse
+RR = 2.166667
+OR = 4.2
+
+
+
+#4. There were differences in the participants' debugging efficiency using JL and JM? 
+
+We applied the (unpaired) wilcoxon rank sum test for the participants who found the bugs.
+
+W = 15, p-value = 0.7551
+
+There were no significant differences in the efficiency using JL and JM. 
+
+
+Cliff's effect size = -0.14 (Cohen's d = -0.16729)
+This means that Jaguar has a small effect size over Eclipse regarding efficiency
+
+Probability of Superiority (PS) = 0.4285
+PS means that 42.85% of the participants who found a bug using Jaguar Line spent less time than those who found using Jaguar Method
+
+
+#4.1 Efficiency JL x Eclipse
+
+W = 2, p-value = 0.381
+
+There were no significant differences in the efficiency using JL and Eclipse. 
+
+
+Cliff's effect size = 0.6 (Cohen's d = 1.1319)
+This means that Jaguar Line has a medium effect size over Eclipse regarding efficiency
+
+Probability of Superiority (PS) = 0.8
+PS means that 80% of the participants who found a bug using Jaguar Line spent less time than those who found using Eclipse
+
+
+
+#4.2 Efficiency JM x Eclipse
+
+W = 16, p-value = 0.2667
+
+There were no significant differences in the efficiency using JM and Eclipse. 
+
+
+Cliff's effect size = -0.5238 (Cohen's d = -0.18663)
+This means that Jaguar Method has a negative medium effect size over Eclipse regarding efficiency
+
+Probability of Superiority (PS) = 0.2381
+PS means that 23.81% of the participants who found a bug using Jaguar Method spent less time than those who found using Eclipse
+
+
+
+#5. Years of experience in Java affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using the generalized linear model, which a linear regression that can be used for data with non-normal error distribution models.
+We compared years of experience in Java and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.5647  -1.0640  -0.8045   1.2704   1.4999  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  -0.9620     0.7420  -1.296    0.195
+Java_Exper    0.2297     0.1806   1.272    0.203
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 34.018  on 24  degrees of freedom
+AIC: 38.018
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of experience in Java on the effectiveness. 
+
+
+
+#6. Years of experience in IDE affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using generalized linear model.
+We compared years of experience in IDE and the debugging effectiveness.
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.160  -1.111  -1.091   1.252   1.272  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept) -0.21880    0.60021  -0.365    0.715
+IDE_Exper    0.02208    0.15461   0.143    0.886
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 35.869  on 24  degrees of freedom
+AIC: 39.869
+
+Number of Fisher Scoring iterations: 3
+
+Thus, there is no significative impact of years of experience in IDE on the effectiveness. 
+
+
+
+#7. Years of experience in JUnit affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using generalized linear model.
+We compared years of experience in JUnit and the debugging effectiveness.
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.382  -1.057  -1.057   1.237   1.303  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  -0.2897     0.4352  -0.666    0.506
+Junit_Exper   0.1517     0.2159   0.703    0.482
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.89  on 25  degrees of freedom
+Residual deviance: 35.32  on 24  degrees of freedom
+AIC: 39.32
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of experience in JUnit on the effectiveness. 
+
+
+
+#8. Years of experience in programming affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using generalized linear model.
+We compared years of experience in programming and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.5898  -1.0486  -0.8909   1.2894   1.4966  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  -1.1390     0.9093  -1.253    0.210
+Prog_Exper    0.2071     0.1736   1.192    0.233
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 34.327  on 24  degrees of freedom
+AIC: 38.327
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of experience in programming on the effectiveness. 
+
+
+
+#9. Years of professional programming experience affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using generalized linear model.
+We compared years of professional programming experience and the debugging effectiveness.
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.269  -1.066  -1.017   1.280   1.347  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  -0.3893     0.4947  -0.787    0.431
+Prof_Exper    0.1202     0.1534   0.784    0.433
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 35.243  on 24  degrees of freedom
+AIC: 39.243
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of professional programming experience on the effectiveness. 
+
+
+#10. The experience level in Java affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using generalized linear model.
+We compared experience level in Java and the debugging effectiveness.
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.152  -1.088  -1.057   1.203   1.336  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  0.09257    1.09167   0.085    0.932
+Java_Level  -0.15297    0.63235  -0.242    0.809
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 35.831  on 24  degrees of freedom
+AIC: 39.831
+
+Number of Fisher Scoring iterations: 3
+
+Thus, there is no significative impact of experience level in Java on the effectiveness. 
+
+
+
+#11. The experience level in IDE affected the debugging effectiveness in Jaguar?
+
+We evaluated this question using generalized linear model.
+We compared experience level in IDE and the debugging effectiveness.
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.119  -1.119  -1.104   1.237   1.269  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept) -0.10135    1.06376  -0.095    0.924
+IDE_Level   -0.03712    0.69498  -0.053    0.957
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 35.887  on 24  degrees of freedom
+AIC: 39.887
+
+Number of Fisher Scoring iterations: 3
+
+Thus, there is no significative impact of experience level in IDE on the effectiveness. 
+
+
+#12. The experience level in JUnit affected the debugging effectiveness in Jaguar?
+
+We applied the evaluate this question using generalized linear model.
+We compared experience level in JUnit and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.2212  -1.1026  -0.9364   1.2541   1.5035  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)   0.1024     0.6146   0.167    0.868
+Junit_Level  -0.2809     0.5221  -0.538    0.591
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.890  on 25  degrees of freedom
+Residual deviance: 35.591  on 24  degrees of freedom
+AIC: 39.591
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of experience level in JUnit on the effectiveness. 
+
+
+
+#13. Years of experience in Java affected the debugging effectiveness in Eclipse?
+
+We evaluate this question using the generalized linear model, which a linear regression that can be used for data with non-normal error distribution models.
+We compared years of experience in Java and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.9789  -0.6503  -0.6170  -0.5077   1.9397  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)  -2.0233     0.9051  -2.235   0.0254 *
+Java_Exper    0.1537     0.1833   0.839   0.4017  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 24.777  on 24  degrees of freedom
+AIC: 28.777
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of experience in Java on the effectiveness. 
+
+
+
+#14. Years of experience in IDE affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared years of experience in IDE and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.7468  -0.6532  -0.6385  -0.6241   1.8832  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept) -1.58723    0.76564  -2.073   0.0382 *
+IDE_Exper    0.05032    0.18611   0.270   0.7869  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 25.386  on 24  degrees of freedom
+AIC: 29.386
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of experience in IDE on the effectiveness. 
+
+
+
+#15. Years of experience in JUnit affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared years of experience in JUnit and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.0980  -0.6362  -0.5478  -0.5478   1.9855  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)   
+(Intercept)  -1.8210     0.5970  -3.050  0.00228 **
+Junit_Exper   0.3263     0.2344   1.392  0.16395   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 23.037  on 24  degrees of freedom
+AIC: 27.037
+
+Number of Fisher Scoring iterations: 3
+
+Thus, there is no significative impact of years of experience in JUnit on the effectiveness. 
+
+
+
+#16. Years of experience in programming affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared years of experience in programming and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.0863  -0.6367  -0.5349  -0.4603   2.0637  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)  -2.7678     1.1690  -2.368   0.0179 *
+Prog_Exper    0.2550     0.1858   1.372   0.1701  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 23.585  on 24  degrees of freedom
+AIC: 27.585
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of experience in programming on the effectiveness. 
+
+
+
+#17. Years of professional programming experience affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared years of professional programming experience and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-1.0762  -0.6235  -0.5395  -0.5395   1.9996  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)   
+(Intercept)  -1.8537     0.6717  -2.760  0.00578 **
+Prof_Exper    0.1790     0.1635   1.095  0.27359   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 24.302  on 24  degrees of freedom
+AIC: 28.302
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of years of professional programming experience on the effectiveness. 
+
+
+#18. The experience level in Java affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared experience level in Java and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.9026  -0.7082  -0.5473  -0.5473   1.9862  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept)  -2.3904     1.4581  -1.639    0.101
+Java_Level    0.5676     0.7824   0.725    0.468
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 24.930  on 24  degrees of freedom
+AIC: 28.93
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of experience level in Java on the effectiveness. 
+
+
+
+#19. The experience level in IDE affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared experience level in IDE and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.6646  -0.6646  -0.6381  -0.6381   1.8793  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)
+(Intercept) -1.30728    1.34883  -0.969    0.332
+IDE_Level   -0.09038    0.89209  -0.101    0.919
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 25.446  on 24  degrees of freedom
+AIC: 29.446
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of experience level in IDE on the effectiveness. 
+
+
+#20. The experience level in JUnit affected the debugging effectiveness in Eclipse?
+
+We evaluated this question using generalized linear model.
+We compared experience level in JUnit and the debugging effectiveness.
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.7493  -0.6557  -0.6557  -0.6125   1.8793  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)  
+(Intercept)  -1.5783     0.7821  -2.018   0.0436 *
+Junit_Level   0.1506     0.6154   0.245   0.8067  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 25.457  on 25  degrees of freedom
+Residual deviance: 25.398  on 24  degrees of freedom
+AIC: 29.398
+
+Number of Fisher Scoring iterations: 4
+
+Thus, there is no significative impact of experience level in JUnit on the effectiveness. 
+
+
+#21. Did the use of breakpoints affect the debugging effectiveness in Jaguar?
+
+We applied the evaluate this question using generalized linear model.
+We compared use of breakpoints during the navigation and the debugging effectiveness.
+
+Deviance Residuals: 
+   Min      1Q  Median      3Q     Max  
+-1.244  -1.080  -1.080   1.278   1.278  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)
+(Intercept)  -0.23425    0.41183  -0.569    0.569
+Jag_BreakAll  0.04322    0.06866   0.629    0.529
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 35.89  on 25  degrees of freedom
+Residual deviance: 35.42  on 24  degrees of freedom
+AIC: 39.42
+
+Number of Fisher Scoring iterations: 4
+
+
+We also built a contingency table (crosstab) to evaluate this question, applying the fbst test.
+
+crosstab
+----------------
+    Found NotFound
+  0    10       11
+  1     2        3
+----------------
+
+p-value = 0.7740864
+
+Thus, there is no significative impact between the use of breakpoints and the effectiveness. 
+
+
+###Control factors assessment - pt.2 (ECR)
+Questions 22 to XX aim to assess if the use of Jaguar can keep developers more closely to the faulty elements (methods and lines).
+Before that, we evaluated if there is some relationship between clicking on the faulty line/method (ECR, explained below) and finding or not the faults.
+We also measured if there a relationship between the time to find the faults and clicking on the faulty elements.
+In both cases, we used logistic regression.
+
+#Effectiveness: fault found / not found - lines
+
+Call:
+glm(formula = DebugResult ~ ClickRate, family = binomial)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.3964  -0.0899  -0.0899   0.1300   1.6367  
+
+Coefficients:
+            Estimate Std. Error z value Pr(>|z|)   
+(Intercept)   2.8330     1.0915   2.595  0.00945 **
+ClickRate     1.2075     0.4284   2.819  0.00482 **
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 65.726  on 51  degrees of freedom
+Residual deviance: 23.323  on 50  degrees of freedom
+AIC: 27.323
+
+Number of Fisher Scoring iterations: 7
+
+***plotting the chart shows that there is a relationship between clicking on the faulty line and finding the bugs.
+Thus, clicking on the faulty more frequently is related to find the bug.
+
+We also applied the fbst test:
+
+p-value = 0.003322259
+
+It helps to confirm that there is a relationship between the variables.
+
+
+#Effectiveness: fault found / not found - methods
+
+Call:
+glm(formula = DebugResult ~ ClickRateMethod, family = binomial)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.9950  -0.8902  -0.8305   1.3715   1.7660  
+
+Coefficients:
+                Estimate Std. Error z value Pr(>|z|)  
+(Intercept)     -0.88441    0.37836  -2.337   0.0194 *
+ClickRateMethod -0.06352    0.08708  -0.729   0.4657  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 65.726  on 51  degrees of freedom
+Residual deviance: 65.182  on 50  degrees of freedom
+AIC: 69.182
+
+Number of Fisher Scoring iterations: 4
+
+***plotting the chart shows that there is not a relationship between clicking on the faulty method and finding the bugs.
+
+We also applied the fbst test:
+
+p-value = 0.003322259
+
+It helps to confirm that there is a relationship between the variables.
+
+
+
+#Efficiency: Time spent for those who found the bug
+
+Call:
+glm(formula = DebugResultTime ~ TimeSpent, family = binomial)
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-0.9579  -0.8869  -0.8574   1.4885   1.5801  
+
+Coefficients:
+             Estimate Std. Error z value Pr(>|z|)  
+(Intercept) -0.940672   0.371739   -2.53   0.0114 *
+TimeSpent    0.006521   0.006934    0.94   0.3470  
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 65.726  on 51  degrees of freedom
+Residual deviance: 64.578  on 50  degrees of freedom
+AIC: 68.578
+
+Number of Fisher Scoring iterations: 4
+
+***plotting the chart shows that there is not a relationship between spending less time to find the bug and find it.
+Also, there is a weak tendency for those that spent more time in finding the bugs.
+
+We also applied the fbst test:
+
+p-value = 0.1528239
+
+It helps to confirm that there is not a relationship between the variables.
+
+
+######################
+Control factors assessment - At least once
+
+Questions 22 to 29 aim to assess if the use of Jaguar can keep developers more closely to the faulty elements (methods and lines) by clicking at least once on the faulty element.
+Before that, we evaluated if there is some relationship between clicking on the faulty line/method (at least once) and finding or not the faults.
+We also measured if there a relationship between the time to find the faults and clicking on the faulty elements.
+
+#1 Click on the faulty line X Find the bug
+We used fbst (prop) considering all tasks (Jaguar + Eclipse)
+
+crosstab
+---------------------------
+               DebugResult
+FaultyLineClick  0  1
+              0 27  0
+              1  8 17
+---------------------------
+
+p-value = 0.003322259																																																																																																																																																																										
+
+The result shows that there is a relationship between clicking on the faulty line and finding the bug.
+
+
+#2 Click on the faulty method X Find the bug
+We used fbst (prop) considering all tasks (Jaguar + Eclipse)
+
+crosstab
+-----------------------------
+                 DebugResult
+FaultyMethodClick  0  1
+                0 15  0
+                1 20 17
+-----------------------------
+
+p-value = 0.003322259
+
+The result shows that there is a relationship between clicking on the faulty method and finding the bug.
+
+
+
+######################
+
+#22. Did the use of Jaguar lead the participants to inspect the faulty statement more than using Eclipse?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty line: # clicks on the faulty line / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line are counted once.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon signed rank to assess this question, comparing the ECR over the faulty line of each participant for both tasks.
+Thus, the use of jaguar had a significant on ECR, which means that the participants inspected the faulty line more using Jaguar.
+
+V = 151, p-value = 0.02552
+
+Pearson's correlation coefficient (r)
+Effect size = -0.3097226
+We used the Pearson's correlation coefficient (r), which varies from -1 to 1. 
+The effect size scale is: small > 0.1, medium > 0.3, large > 0.5
+Thus, the effect size is medium in this case.
+
+
+Effect size using Cliff's delta Dominance Matrix (DM) effect size (Cliff, 1993)
+Cliff's delta varies between -1 and 1.
+
+Cliff's effect size = 0.3630769 (Cohen's d = 0.56334)
+This means that Jaguar has a medium effect size over Eclipse regarding clicks on the faulty line
+
+*Cohen's d scale: small > 0.2, medium > 0.5, large > 0.8
+
+Probability of Superiority (PS) = 0.5692308
+PS means that 56.92% of the participants using Jaguar clicked more on the faulty line than using only Eclipse
+From the chart, we see that 20.62% clicked more in the faulty line using Eclipse, and for 22.46% the ECR was the same for both tasks.
+
+
+
+#Number of clicks greater than median 
+We also built a contingency table to compare those that clicked more than the median in the faulty line for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+--------------------
+          y_ecl_line
+x_jag_line  0  1
+         0  7  1
+         1 12  6
+--------------------
+
+p-value = 0.006644518
+
+Also in this case, there is a significative relationship between the use of Jaguar and inspecting the faulty line. 
+
+Effect size
+For binary data, we used Risk Ratio and Odds Ratio to measure the effect size.
+Risk ratio = 2.571429
+Odds ratio = 6.107143
+
+The effect size for odds ratio is medium, and for risk ratio means that Jaguar leads to click in the faulty 2.57 times than using Eclipse.
+
+
+####At least one click in the faulty line 
+We also built a contingency table to compare those that clicked, at least once, in the faulty line for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+----------------
+        Eclipse
+Jaguar    0  1
+       0  7  1
+       1 12  6
+----------------
+
+p-value = 0.003322259
+
+Thus, there is a significative relationship between the use of Jaguar and inspecting the faulty line. 
+
+Effect size
+Risk ratio = 2.571429
+Odds ratio = 6.107143
+
+The effect size for odds ratio is medium, and for risk ratio means that Jaguar leads to click in the faulty 2.57 times than using Eclipse.
+
+
+
+#23. Did the use of Jaguar lead the participants to inspect the faulty method more than using Eclipse?
+
+We calculated the effective clicking rate (ECR) over the faulty method: # clicks on the faulty method / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line are counted once.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon signed rank to assess this question, comparing the ECR over the faulty method of each participant for both tasks.
+Thus, the use of jaguar had not a significant on ECR, which means that there were no relationship inspecting the faulty method and the use of Jaguar.
+
+V = 199, p-value = 0.1658
+
+
+Pearson's correlation coefficient (r)
+Effect size = -0.192164
+Thus, the effect size is small in this case.
+
+
+Cliff's effect size = 0.2661538 (Cohen's d = 0.38718)
+This means that Jaguar has a small effect size over Eclipse regarding clicks on the faulty method
+
+Probability of Superiority (PS) = 0.5953846
+PS means that 59.54% of the participants using Jaguar clicked more on the faulty method than using only Eclipse
+From the chart, we see that 32.92% clicked more in the faulty method using Eclipse, and for 7.54% the ECR was the same for both tasks.
+
+
+
+#Number of clicks greater than median 
+#We also built a contingency table to compare those that clicked more than the median in the faulty method for both tasks.
+#We used the fbst test to evaluate this question:
+crosstab
+-------------------------
+            y_ecl_method
+x_jag_method  0  1
+           0  4  7
+           1 11  4
+-------------------------
+
+p-value = 0.3621262
+
+Thus, there is no significative impact between the use of Jaguar and inspecting the faulty method. 
+
+Effect size
+Risk ratio = 1.363636
+Odds ratio = 1.859504
+
+The effect size for odds ratio is small, and for risk ratio means that Jaguar leads to click in the faulty 1.36 times than using Eclipse.
+
+
+####At least one click in the faulty method
+We also built a contingency table to compare those that clicked, at least once, in the faulty method for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+----------------
+        Eclipse
+Jaguar   0  1
+      0  2  3
+      1  8 13
+----------------
+
+p-value = 0.1295681
+
+Thus, there is not a significative relationship between the use of Jaguar and inspecting the faulty method at least once. 
+
+Effect size
+Risk ratio = 1.3125
+Odds ratio = 2.625
+
+The effect size for odds ratio is small, and for risk ratio means that Jaguar leads to click in the faulty 1.31 times than using Eclipse.
+
+
+
+#24. Did the use of Jaguar Line lead the participants to inspect the faulty line more than using Jaguar Method?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty line: # clicks on the faulty line / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line are counted once.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon rank sum to assess this question, comparing the ECR over the faulty line. We compared the participants that used Jaguar Line and those that used Jaguar Method.
+Thus, there were no differences regarding the inspection of the faulty line using Jaguar Line or Jaguar Method.
+
+W = 76.5, p-value = 0.7148
+
+Pearson's correlation coefficient (r)
+Effect size = -0.07165875
+
+Cliff's effect size = -0.08928571 (Cohen's d = -0.10716)
+This means that Jaguar Line has a (negative) small effect size over Jaguar Method regarding clicks on the faulty line
+
+Probability of Superiority (PS) = 0.4047619
+PS means that 40.48% of the participants using Jaguar Line clicked more on the faulty line than using Jaguar Method.
+From the chart, we see that 49.4% clicked more in the faulty line using Jaguar Method, and for 10.12% the ECR was the same for both tasks.
+
+
+We did not build a contingency table for this question because the number of participants using JM and JL are different, respectively, 14 and 12.
+
+
+
+#25. Did the use of Jaguar Line lead the participants to inspect the faulty method more than using Jaguar Method?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty method: # clicks on the faulty method / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line of a method are counted once.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon rank sum to assess this question, comparing the ECR over the faulty method. We compared the participants that used Jaguar Line and those that used Jaguar Method.
+Thus, there were no differences regarding the inspection of the faulty method using Jaguar Line or Jaguar Method.
+
+W = 85.5, p-value = 0.9588
+
+Pearson's correlation coefficient (r)
+Effect size = -0.01012353
+
+Cliff's effect size = 0.01785714 (Cohen's d = 0.02258)
+This means that Jaguar Line has an insignificant effect size over Jaguar Method regarding clicks on the faulty method
+
+Probability of Superiority (PS) = 0.4880952
+PS means that 48.81% of the participants using Jaguar Line clicked more on the faulty method than using Jaguar Method.
+From the chart, we see that 47.02% clicked more in the faulty method using Jaguar Method, and for 4.17% the ECR was the same for both tasks.
+
+
+We did not build a contingency table for this question because the number of participants using JM and JL are different, respectively, 14 and 12.
+
+
+
+#26. Did the use of Jaguar Line lead the participants to inspect the faulty line more than using Eclipse?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty line: # clicks on the faulty line / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line are counted once.
+We compared only those participants (12 of 26) who used Jaguar Line.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon signed rank to assess this question, comparing the ECR over the faulty line of each participant for both tasks.
+Thus, the use of jaguar had not a significant on ECR, which means that there was no significant difference in inspecting the faulty line using Jaguar Line or Eclipse. 
+This would be occurring due to the number of participants considered in this analysis.
+
+V = 34.5, p-value = 0.1727
+
+Pearson's correlation coefficient (r)
+Effect size = -0.2783435
+
+Cliff's effect size = 0.2727273 (Cohen's d = 0.3984)
+This means that Jaguar Line has a small effect size over Eclipse regarding clicks on the faulty line
+
+Probability of Superiority (PS) = 0.5227273
+PS means that 52.27% of the participants using Jaguar Line clicked more on the faulty line than using only Eclipse.
+From the chart, we see that 25% clicked more in the faulty line using Eclipse, and for 22.73% the ECR was the same for both tasks.
+
+
+#Number of clicks greater than median 
+We also built a contingency table to compare those that clicked more than the median in the faulty line for Jaguar Line and Eclipse.
+We used the fbst test to evaluate this question:
+crosstab
+---------------------
+           y_ecl_jlel
+x_jag_jlel  0 1
+         0  3 1
+         1  5 3
+---------------------
+
+p-value = 0.07973422
+
+Thus, there is no significative impact between the use of Jaguar Line and Eclipse to inspect the faulty line. 
+
+
+Effect size
+Risk ratio = 2
+Odds ratio = 4
+
+The effect size for odds ratio is medium, and for risk ratio means that Jaguar Line leads to click in the faulty line 2 times more than using Eclipse.
+
+
+####At least one click in the faulty line
+We also built a contingency table to compare those that clicked, at least once, in the faulty line for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+-----------------------------------------
+                 FaultyLineClickEclipseJL
+FaultyLineClickJL 0 1
+                0 3 1
+                1 5 3
+-----------------------------------------
+
+p-value = 0.08637874
+
+Thus, there is not a significative relationship between the use of Jaguar and Eclipse to inspect the faulty line at least once. 
+
+Effect size
+Risk ratio = 2
+Odds ratio = 4
+
+The effect size for odds ratio is medium, and for risk ratio means that Jaguar Line leads to click in the faulty 2 times than using Eclipse.
+
+
+
+
+#27. Did the use of Jaguar Method lead the participants to inspect the faulty line more than using Eclipse?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty line: # clicks on the faulty line / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line are counted once.
+We compared only those participants (14 of 26) who used Jaguar Method.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon signed rank to assess this question, comparing the ECR over the faulty line of each participant for both tasks.
+Thus, the use of jaguar had not a significant on ECR, which means that there was no significant difference in inspecting the faulty line using Jaguar Method or Eclipse. 
+This would be occurring due to the number of participants considered in this analysis.
+
+V = 45, p-value = 0.08313
+
+Pearson's correlation coefficient (r)
+Effect size = -0.3274685
+
+Cliff's effect size = 0.4120879 (Cohen's d = 0.66242)
+This means that Jaguar Method has a medium effect size over Eclipse regarding clicks on the faulty line
+
+Probability of Superiority (PS) = 0.5934066
+PS means that 59.34% of the participants using Jaguar Method clicked more on the faulty line than using only Eclipse.
+From the chart, we see that 18.13% clicked more in the faulty line using Eclipse, and for 22.53% the ECR was the same for both tasks.
+
+
+
+#Number of clicks greater than median 
+We also built a contingency table to compare those that clicked more than the median in the faulty line for Jaguar Method and Eclipse.
+We used the fbst test to evaluate this question:
+crosstab
+---------------------
+          y_ecl_jmel
+x_jag_jmel 0 1
+         0 4 0
+         1 7 3
+---------------------
+
+p-value = 0.006644518
+
+Thus, there is a significative impact between the use of Jaguar Method and Eclipse to inspect the faulty line. 
+
+
+Effect size
+Risk ratio = 3.33
+Odds ratio = 9.166667
+
+The effect size for odds ratio is large, and for risk ratio means that Jaguar Method leads to click in the faulty 3.33 times than using Eclipse.
+
+
+####At least one click in the faulty line
+We also built a contingency table to compare those that clicked, at least once, in the faulty line for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+-----------------------------------------
+                 FaultyLineClickEclipseJM
+FaultyLineClickJM 0 1
+                0 4 0
+                1 7 3
+-----------------------------------------
+
+p-value = 0.01328904
+
+Thus, there is a significative relationship between the use of Jaguar Method and Eclipse to inspect the faulty line at least once. 
+
+Effect size
+Risk ratio = 3.33
+Odds ratio = 9.166667
+
+The effect size for odds ratio is large, and for risk ratio means that Jaguar Method leads to click in the faulty line 3.33 times more than using Eclipse.
+
+
+
+#28. Did the use of Jaguar Line lead the participants to inspect the faulty method more than using Eclipse?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty method: # clicks on the faulty method / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line of a method are counted once.
+We compared only those participants (12 of 26) who used Jaguar Line.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon rank sum to assess this question, comparing the ECR over the faulty method of each participant for both tasks.
+Thus, the use of jaguar had not a significant on ECR, which means that there was no significant difference in inspecting the faulty method using Jaguar Line or Eclipse. 
+This would be occurring due to the number of participants considered in this analysis.
+
+V = 42, p-value = 0.8501
+
+Pearson's correlation coefficient (r)
+Effect size = -0.0385782
+
+Cliff's effect size = 0.03787879 (Cohen's d = 0.0484)
+This means that Jaguar Line has an insignificant effect size over Eclipse regarding clicks on the faulty method
+
+Probability of Superiority (PS) = 0.4848485
+PS means that 48.48% of the participants using Jaguar Line clicked more on the faulty method than using only Eclipse.
+From the chart, we see that 44.7% clicked more in the faulty method using Eclipse, and for 6.82% the ECR was the same for both tasks.
+
+
+#Number of clicks greater than median 
+We also built a contingency table to compare those that clicked more than the median in the faulty method for Jaguar Line and Eclipse.
+We used the fbst test to evaluate this question:
+crosstab
+---------------------
+           y_ecl_jlem
+x_jag_jlem  0 1
+         0  2 4
+         1  4 2
+---------------------
+
+p-value = 1
+
+Thus, there is no significative impact between the use of Jaguar Line and Eclipse to inspect the faulty method. 
+
+
+Effect size
+Risk ratio = 1
+Odds ratio = 1
+
+The effect size for odds ratio is insignificant, and for risk ratio means that there is no difference between Jaguar Line and Eclipse in leading to click in the faulty method.
+
+
+####At least one click in the faulty method
+We also built a contingency table to compare those that clicked, at least once, in the faulty method for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+-----------------------------------------
+                   FaultyMethodClickEclipseJL
+FaultyMethodClickJL 0 1
+                  0 0 2
+                  1 4 6
+-----------------------------------------
+
+p-value = 0.4684385
+
+Thus, there is not a significative relationship between the use of Jaguar Line and Eclipse to inspect the faulty method at least once. 
+
+Effect size
+Risk ratio = 1.25
+Odds ratio = 2.5
+
+The effect size for odds ratio is small, and for risk ratio means that Jaguar Method leads to click in the faulty method 1.25 times more than using Eclipse.
+
+
+
+#29. Did the use of Jaguar Method lead the participants to inspect the faulty method more than using Eclipse?
+
+To answer this question, we calculated the effective clicking rate (ECR) over the faulty method: # clicks on the faulty method / # all clicks
+We counted each distinctive click on editor area as one click, i.e., consecutive clicks on the same line of a method are counted once.
+We compared only those participants (14 of 26) who used Jaguar Method.
+
+After this, we normalize the ECR values per the maximum rate to keep the scale between 0 and 1. 
+Then, we calculate the logit function. The idea is to obtain more discriminative data for the statistical tests.
+
+We used the Wilcoxon signed rank to assess this question, comparing the ECR over the faulty method of each participant for both tasks.
+Thus, the use of Jaguar Method had not a significant on ECR, which means that there was no significant difference in inspecting the faulty method using Jaguar Method or Eclipse. 
+This would be occurring due to the number of participants considered in this analysis.
+
+V = 52, p-value = 0.3268
+
+Pearson's correlation coefficient (r)
+Effect size = -0.1853123
+
+Cliff's effect size = 0.2692308 (Cohen's d = 0.39242)
+This means that Jaguar Method has a small effect size over Eclipse regarding clicks on the faulty method
+
+Probability of Superiority (PS) = 0.5879121
+PS means that 58.79% of the participants using Jaguar Method clicked more on the faulty method than using only Eclipse.
+From the chart, we see that 31.87% clicked more in the faulty method using Eclipse, and for 9.34% the ECR was the same for both tasks.
+
+
+#Number of clicks greater than median 
+We also built a contingency table to compare those that clicked more than the median in the faulty method for Jaguar Method and Eclipse.
+We used the fbst test to evaluate this question:
+crosstab
+---------------------
+          y_ecl_jmem
+x_jag_jmem 0 1
+         0 3 3
+         1 5 3
+---------------------
+
+p-value = 0.5149502
+
+Thus, there is no significative impact between the use of Jaguar Method and Eclipse to inspect the faulty method. 
+
+
+Effect size
+Risk ratio = 1.333333
+Odds ratio = 1.777778
+
+The effect size for odds ratio is small, and for risk ratio means that Jaguar Method leads to click in the faulty method 1.33 times more than using Eclipse.
+
+
+####At least one click in the faulty method
+We also built a contingency table to compare those that clicked, at least once, in the faulty method for both tasks.
+We used the fbst test to evaluate this question:
+crosstab
+-----------------------------------------
+                    FaultyMethodClickEclipseJM
+FaultyMethodClickJM  0 1
+                  0  2 1
+                  1  4 7
+-----------------------------------------
+
+p-value = 0.1860465
+
+Thus, there is not a significative relationship between the use of Jaguar Method and Eclipse to inspect the faulty method at least once. 
+
+Effect size
+Risk ratio = 1.375
+Odds ratio = 2.75
+
+The effect size for odds ratio is small, and for risk ratio means that Jaguar Method leads to click in the faulty method 1.37 times more than using Eclipse.
+
+
+
+==============================Effectiveness for methods=================================================================
+
+================Jaguar x Eclipse
+
+#1. There were differences in the participants' debugging effectiveness in foundind the faulty methods using Jaguar and Eclipse?
+
+We built a contingency table (crosstab) for the participants who found/not found the faulty methods for both Jaguar and Eclipse tasks.
+We applied the fbst (diagsym) test to assess if there were significant differences for the debugging effectiveness using both techniques.
+
+crosstab
+-------------------------
+               Eclipse
+J          Found NotFound
+a Found        7      11
+g NotFound     1       7
+-------------------------
+
+p-value = 0.003322259
+
+The p-value indicates that there is a significant difference in locating the faulty method using Jaguar or Eclipse with statistical significance.
+The effect size is medium.
+
+The effect size for binary data is measured by odds ratio (OR).
+
+eclipse
+8 / 18 = 0.4444444
+
+jaguar
+18 / 8 = 2.25
+
+oddratio = 2.25 / 0.3684211 = 5.0625
+
+* according to Chen et al. (2010), odds ratio interpretation is:
+> 1.68 = small
+> 3.47 = medium
+> 6.71 = large
+these values are compared to the Cohen's r scale
+
+
+================Jaguar Line x Eclipse
+
+#1.2. There were differences in the participants' debugging effectiveness in foundind the faulty methods using Jaguar Line and Eclipse?
+
+We built a contingency table (crosstab) for the participants who found/not found the faulty methods for both Jaguar and Eclipse tasks.
+We applied the fbst (diagsym) test to assess if there were significant differences for the debugging effectiveness using both techniques.
+
+crosstab
+-------------------------
+               Eclipse
+J          Found NotFound
+a Found        2       6
+g NotFound     0       4
+-------------------------
+
+p-value = 0.006644518
+
+The p-value indicates that there is a significant difference in locating the faulty method using Jaguar or Eclipse with statistical significance.
+The effect size is large.
+
+The effect size for binary data is measured by odds ratio (OR).
+
+eclipse
+2 / 10 = 0.2
+
+jaguar
+8 / 4 = 2
+
+oddratio = 2 / 0.2 = 10
+
+
+================Jaguar Method x Eclipse
+
+1.2. There were differences in the participants' debugging effectiveness in foundind the faulty methods using Jaguar Line and Eclipse?
+
+We built a contingency table (crosstab) for the participants who found/not found the faulty methods for both Jaguar and Eclipse tasks.
+We applied the fbst (diagsym) test to assess if there were significant differences for the debugging effectiveness using both techniques.
+
+crosstab
+-------------------------
+               Eclipse
+J          Found NotFound
+a Found        5       5
+g NotFound     1       3
+-------------------------
+
+p-value = 0.10299
+
+The p-value indicates that there is not a significant difference in locating the faulty method using Jaguar Method or Eclipse with statistical significance.
+The effect size is medium.
+
+The effect size for binary data is measured by odds ratio (OR).
+
+eclipse
+6 / 8 = 0.75
+
+jaguar
+10 / 4 = 2.5
+
+oddratio = 2.5 / 0.75 = 3.33
+
+
+
+================Jaguar Line x Jaguar Method
+
+--
+
+
